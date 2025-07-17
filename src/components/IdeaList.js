@@ -6,32 +6,33 @@ import dayjs from "dayjs";
 const IdeaList = ({ ideas = [] }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {ideas.map((idea) => {
-        const imageUrl =
-          idea.small_image?.[0]?.url ??
-          "https://via.placeholder.com/300x200?text=No+Image";
+      {ideas.map((idea) => (
+        <div
+          key={idea.id}
+          className="border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition"
+        >
+          <LazyLoad height={200} once>
+            <img
+              src={
+                idea.medium_image?.url ||
+                "https://placehold.co/600x400?text=No+Image"
+              }
+              alt={idea.title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </LazyLoad>
 
-        return (
-          <div
-            key={idea.id}
-            className="border rounded-xl overflow-hidden shadow-md"
-          >
-            <LazyLoad height={200} offset={100}>
-              <img
-                src={imageUrl}
-                alt={idea.title}
-                className="w-full h-48 object-cover"
-              />
-            </LazyLoad>
-            <div className="p-4">
-              <p className="text-sm text-gray-500 mb-2">
-                {dayjs(idea.published_at).format("DD MMMM, YYYY").toUpperCase()}
-              </p>
-              <h2 className="text-lg font-semibold">{idea.title}</h2>
-            </div>
+          <div className="p-4">
+            <p className="text-sm text-gray-500">
+              {dayjs(idea.published_at).format("DD MMMM, YYYY").toUpperCase()}
+            </p>
+            <h3 className="mt-2 text-lg font-semibold line-clamp-3">
+              {idea.title}
+            </h3>
           </div>
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
 };

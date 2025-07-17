@@ -1,8 +1,9 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}", // pastikan ini memuat semua file React-mu
+  ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/line-clamp")],
 };

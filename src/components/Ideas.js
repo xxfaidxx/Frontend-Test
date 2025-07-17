@@ -1,27 +1,41 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import Banner from "./Banner";
 import IdeaList from "./IdeaList";
 import axios from "axios";
 
 const Ideas = () => {
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
-  const [sort, setSort] = useState("-published_at");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [ideas, setIdeas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [meta, setMeta] = useState(null);
   const [links, setLinks] = useState({});
 
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const sort = searchParams.get("sort") || "-published_at";
+
+  const updateParams = (newParams) => {
+    setSearchParams({
+      page: newParams.page ?? page,
+      size: newParams.size ?? size,
+      sort: newParams.sort ?? sort,
+    });
+  };
+
   useEffect(() => {
     const fetchIdeas = async () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://suitmedia-backend.suitdev.com/api/ideas?page[number]=${page}&page[size]=${size}&append[]=small_image&append[]=medium_image&sort=${sort}`,
+          "https://suitmedia-backend.suitdev.com/api/ideas",
           {
-            headers: {
-              Accept: "application/json",
+            params: {
+              "page[number]": 1,
+              "page[size]": 10,
+              "append[]": "medium_image", // ⬅️ format yang benar
+              sort: "-published_at", // ⬅️ tanpakan “:1”
             },
           }
         );
@@ -76,10 +90,9 @@ const Ideas = () => {
               <label className="mr-2">Show per page:</label>
               <select
                 value={size}
-                onChange={(e) => {
-                  setSize(Number(e.target.value));
-                  setPage(1);
-                }}
+                onChange={(e) =>
+                  updateParams({ size: Number(e.target.value), page: 1 })
+                }
                 className="border rounded-full px-10 py-1 pl-3 text-left"
               >
                 <option value={10}>10</option>
@@ -91,10 +104,9 @@ const Ideas = () => {
               <label className="mr-2">Sort by:</label>
               <select
                 value={sort}
-                onChange={(e) => {
-                  setSort(e.target.value);
-                  setPage(1);
-                }}
+                onChange={(e) =>
+                  updateParams({ sort: e.target.value, page: 1 })
+                }
                 className="border rounded-full px-10 py-1 pl-3 text-left"
               >
                 <option value="-published_at">Newest</option>
@@ -112,7 +124,7 @@ const Ideas = () => {
 
         <div className="mt-10 flex justify-center space-x-2">
           <button
-            onClick={() => setPage(1)}
+            onClick={() => updateParams({ page: 1 })}
             disabled={!links.prev}
             className={`px-1 py-1 text-md ${
               !links.prev ? "text-gray-500" : "text-black"
@@ -121,7 +133,7 @@ const Ideas = () => {
             &laquo;
           </button>
           <button
-            onClick={() => setPage(page - 1)}
+            onClick={() => updateParams({ page: page - 1 })}
             disabled={!links.prev}
             className={`px-1 py-1 text-md ${
               !links.prev ? "text-gray-500" : "text-black"
@@ -132,7 +144,7 @@ const Ideas = () => {
           {paginationRange().map((p) => (
             <button
               key={p}
-              onClick={() => setPage(p)}
+              onClick={() => updateParams({ page: p })}
               className={`px-2 py-1 rounded text-xs ${
                 page === p
                   ? "bg-[rgb(255,102,0)] text-white"
@@ -143,7 +155,7 @@ const Ideas = () => {
             </button>
           ))}
           <button
-            onClick={() => setPage(page + 1)}
+            onClick={() => updateParams({ page: page + 1 })}
             disabled={!links.next}
             className={`px-1 py-1 text-md ${
               !links.next ? "text-gray-700" : "text-black"
@@ -152,7 +164,7 @@ const Ideas = () => {
             &rsaquo;
           </button>
           <button
-            onClick={() => setPage(meta?.last_page)}
+            onClick={() => updateParams({ page: meta?.last_page })}
             disabled={!links.next}
             className={`px-1 py-1 text-md ${
               !links.next ? "text-gray-700" : "text-black"
