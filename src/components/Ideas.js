@@ -33,12 +33,11 @@ const Ideas = () => {
           {
             headers: {
               Accept: "application/json",
-              contentType: "application/json",
             },
             params: {
               "page[number]": page,
               "page[size]": size,
-              append: ["small_image", "medium_image"],
+              "append[]": ["small_image", "medium_image"],
               sort: sort,
             },
           }

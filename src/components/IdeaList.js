@@ -1,4 +1,3 @@
-// src/components/IdeaList.js
 import React from "react";
 import LazyLoad from "react-lazyload";
 import dayjs from "dayjs";
@@ -15,10 +14,11 @@ const IdeaList = ({ ideas = [] }) => {
             <img
               src={
                 idea.medium_image?.url ||
+                idea.small_image?.url ||
                 "https://placehold.co/600x400?text=No+Image"
               }
               alt={idea.title}
-              className="w-full h-full object-cover"
+              className="w-full h-[200px] object-cover"
               loading="lazy"
             />
           </LazyLoad>
