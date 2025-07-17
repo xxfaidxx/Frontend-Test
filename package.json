@@ -1,6 +1,7 @@
 {
   "name": "suitmedia-ideas",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@tailwindcss/line-clamp": "^0.4.4",
