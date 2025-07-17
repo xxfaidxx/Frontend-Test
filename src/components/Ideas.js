@@ -9,13 +9,11 @@ const Ideas = () => {
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState("-published_at");
   const [ideas, setIdeas] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [meta, setMeta] = useState(null);
   const [links, setLinks] = useState({});
 
   useEffect(() => {
-    setLoading(true);
     axios
       .get(
         `/api/ideas?page[number]=${page}&page[size]=${size}&append[]=small_image&append[]=medium_image&sort=${sort}`
@@ -24,11 +22,9 @@ const Ideas = () => {
         setIdeas(response.data.data);
         setMeta(response.data.meta);
         setLinks(response.data.links);
-        setLoading(false);
       })
       .catch((error) => {
         setError(error.message);
-        setLoading(false);
       });
   }, [page, size, sort]);
 
