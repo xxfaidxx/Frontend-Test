@@ -1,40 +1,39 @@
-// src/components/IdeaList.js
-import React from "react";
-import LazyLoad from "react-lazyload";
-import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import IdeaList from "../components/IdeaList";
+import axios from "axios";
 
-const IdeaList = ({ ideas = [] }) => {
+const Ideas = () => {
+  const [ideas, setIdeas] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchIdeas = async () => {
+      try {
+        const API_BASE_URL = import.meta.env.PROD
+          ? "https://suitmedia-backend.suitdev.com/api"
+          : "/api";
+
+        const res = await axios.get(
+          `${API_BASE_URL}/ideas?page[number]=1&page[size]=10&append[]=medium_image&sort=-published_at`
+        );
+        setIdeas(res.data.data);
+      } catch (error) {
+        console.error("Error fetching ideas:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIdeas();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {ideas.map((idea) => (
-        <div
-          key={idea.id}
-          className="border rounded-lg overflow-hidden shadow-sm bg-white"
-        >
-          <LazyLoad height={180} offset={100}>
-            <div className="aspect-[16/9] w-full overflow-hidden">
-              <img
-                src={
-                  idea.medium_image_url ||
-                  "https://placehold.co/600x400?text=No+Image"
-                }
-                alt={idea.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </LazyLoad>
-          <div className="p-4">
-            <p className="text-xs text-gray-500 uppercase mb-1">
-              {dayjs(idea.published_at).format("D MMM YYYY")}
-            </p>
-            <h2 className="text-base font-semibold leading-tight line-clamp-3">
-              {idea.title}
-            </h2>
-          </div>
-        </div>
-      ))}
+    <div className="container mx-auto px-4 py-8">
+      <IdeaList ideas={ideas} />
     </div>
   );
 };
 
-export default IdeaList;
+export default Ideas;
