@@ -13,11 +13,12 @@ const IdeaList = ({ ideas = [] }) => {
           <LazyLoad height={200} offset={100}>
             <img
               src={
-                idea.medium_image?.url ||
-                "https://via.placeholder.com/400x200?text=No+Image"
+                idea.small_image?.url
+                  ? `https://suitmedia-backend.suitdev.com${idea.small_image.url}`
+                  : "https://via.placeholder.com/300x200?text=No+Image"
               }
               alt={idea.title}
-              className="w-full h-48 object-cover"
+              className="w-full h-48 object-cover rounded-t-lg"
             />
           </LazyLoad>
           <div className="p-4">
