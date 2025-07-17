@@ -18,8 +18,14 @@ const Ideas = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `/api/ideas?page[number]=${page}&page[size]=${size}&append[]=small_image&append[]=medium_image&sort=${sort}`
+          `/api/ideas?page[number]=${page}&page[size]=${size}&append[]=small_image&append[]=medium_image&sort=${sort}`,
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
         );
+
         setIdeas(response.data.data);
         setMeta(response.data.meta);
         setLinks(response.data.links);
