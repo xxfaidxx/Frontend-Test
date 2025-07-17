@@ -11,7 +11,18 @@ function App() {
   return (
     <Router>
       <Header />
+
       <Routes>
+        <Route
+          path="/"
+          element={
+            <div className="pt-24 p-10 text-center">
+              <h1 className="text-4xl font-bold">
+                Selamat Datang di Frontend Test ini
+              </h1>
+            </div>
+          }
+        />
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/work" element={<Work />} />
