@@ -7,29 +7,27 @@ const IdeaList = ({ ideas = [] }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {ideas.map((idea) => {
-        console.log(idea.small_image); // 🔍 Tambahkan DI SINI
+        const imageUrl =
+          idea.small_image?.[0]?.url ??
+          "https://via.placeholder.com/300x200?text=No+Image";
 
         return (
           <div
             key={idea.id}
-            className="border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition"
+            className="border rounded-xl overflow-hidden shadow-md"
           >
-            <LazyLoad height={200} once>
+            <LazyLoad height={200} offset={100}>
               <img
-                src={
-                  idea.small_image?.url?.full ??
-                  "https://via.placeholder.com/300x200?text=No+Image"
-                }
+                src={imageUrl}
                 alt={idea.title}
                 className="w-full h-48 object-cover"
               />
             </LazyLoad>
-
             <div className="p-4">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 mb-2">
                 {dayjs(idea.published_at).format("DD MMMM, YYYY").toUpperCase()}
               </p>
-              <h3 className="mt-2 text-lg font-semibold">{idea.title}</h3>
+              <h2 className="text-lg font-semibold">{idea.title}</h2>
             </div>
           </div>
         );
