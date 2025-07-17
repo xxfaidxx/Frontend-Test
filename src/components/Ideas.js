@@ -33,6 +33,7 @@ const Ideas = () => {
           {
             headers: {
               Accept: "application/json",
+              contentType: "application/json",
             },
             params: {
               "page[number]": page,
