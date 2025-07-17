@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import Banner from "./Banner";
 import IdeaList from "./IdeaList";
 import axios from "axios";
+import Banner from "../components/Banner";
 
 const Ideas = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -83,12 +83,7 @@ const Ideas = () => {
 
   return (
     <div>
-      <Banner
-        imageUrl="https://plus.unsplash.com/premium_photo-1673514503545-1ca1193e4094?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        title="Ideas"
-        subtitle="We have great ideas"
-      />
-
+      <Banner />
       <main className="px-20 py-10">
         <div className="flex justify-between items-center mb-10">
           <span>

@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
-import logo from "../assets/suitmedia_logo.png"; // pastikan file logo.png ada di src/assets/
+import logo from "../assets/logo.png";
 
 const Header = () => {
   const location = useLocation();
@@ -34,12 +34,10 @@ const Header = () => {
       } bg-orange-500 shadow backdrop-blur bg-opacity-90`}
     >
       <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-3">
-        {/* Logo */}
         <Link to="/">
           <img src={logo} alt="Suitmedia Logo" className="h-12 w-auto" />
         </Link>
 
-        {/* Navigation */}
         <nav className="flex space-x-8">
           {navItems.map((item) => (
             <Link
