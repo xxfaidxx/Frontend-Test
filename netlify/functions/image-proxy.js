@@ -13,6 +13,14 @@ exports.handler = async function (event) {
 
   try {
     const response = await fetch(imageUrl);
+
+    if (!response.ok) {
+      return {
+        statusCode: response.status,
+        body: `Failed to fetch image: ${response.statusText}`,
+      };
+    }
+
     const contentType = response.headers.get("content-type");
     const body = await response.buffer();
 
@@ -28,7 +36,7 @@ exports.handler = async function (event) {
   } catch (error) {
     return {
       statusCode: 500,
-      body: "Image fetch failed",
+      body: `Image fetch failed: ${error.message}`,
     };
   }
 };
