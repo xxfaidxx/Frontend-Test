@@ -1,13 +1,13 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import Header from "./components/Header";
 import Banner from "./components/Banner";
-import IdeasList from "./components/List";
+import Ideas from "./components/Ideas";
 
 function App() {
   return (
     <Router>
       <Header />
-      <IdeasList />
+      <Ideas />
     </Router>
   );
 }
