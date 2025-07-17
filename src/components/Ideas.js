@@ -40,7 +40,7 @@ const Ideas = () => {
 
   useEffect(() => {
     setSearchParams({ page, size, sort });
-  }, [page, size, sort]);
+  }, [page, size, sort, setSearchParams]);
 
   const handleSizeChange = (e) => {
     setSize(Number(e.target.value));
