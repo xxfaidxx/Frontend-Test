@@ -18,7 +18,7 @@ const Ideas = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `/api/ideas?page[number]=${page}&page[size]=${size}&append[]=small_image&append[]=medium_image&sort=${sort}`,
+          `https://suitmedia-backend.suitdev.com/api/ideas?page[number]=${page}&page[size]=${size}&append[]=small_image&append[]=medium_image&sort=${sort}`,
           {
             headers: {
               Accept: "application/json",
