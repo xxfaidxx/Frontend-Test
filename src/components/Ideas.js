@@ -31,11 +31,14 @@ const Ideas = () => {
         const response = await axios.get(
           "https://suitmedia-backend.suitdev.com/api/ideas",
           {
+            headers: {
+              Accept: "application/json",
+            },
             params: {
-              "page[number]": 1,
-              "page[size]": 10,
-              "append[]": "medium_image", // ⬅️ format yang benar
-              sort: "-published_at", // ⬅️ tanpakan “:1”
+              "page[number]": page,
+              "page[size]": size,
+              append: ["small_image", "medium_image"],
+              sort: sort,
             },
           }
         );
