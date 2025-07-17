@@ -1,42 +1,38 @@
-// netlify/functions/image-proxy.js
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
-exports.handler = async function (event) {
-  const imageUrl = event.queryStringParameters.url;
+/**
+ * Proxy image from a remote URL and return it to bypass CORS issues.
+ */
+const handler = async (req, context) => {
+  const { searchParams } = new URL(req.url);
+  const targetUrl = searchParams.get("url");
 
-  if (!imageUrl) {
-    return {
-      statusCode: 400,
-      body: "Missing image URL",
-    };
+  if (!targetUrl) {
+    return new Response("Missing 'url' query parameter", { status: 400 });
   }
 
   try {
-    const response = await fetch(imageUrl);
+    const response = await fetch(targetUrl);
 
     if (!response.ok) {
-      return {
-        statusCode: response.status,
-        body: `Failed to fetch image: ${response.statusText}`,
-      };
+      return new Response("Failed to fetch image from source.", {
+        status: response.status,
+      });
     }
 
-    const contentType = response.headers.get("content-type");
-    const body = await response.buffer();
+    const contentType = response.headers.get("content-type") || "image/jpeg";
+    const imageBuffer = await response.arrayBuffer();
 
-    return {
-      statusCode: 200,
+    return new Response(imageBuffer, {
+      status: 200,
       headers: {
         "Content-Type": contentType,
         "Cache-Control": "public, max-age=31536000",
       },
-      body: body.toString("base64"),
-      isBase64Encoded: true,
-    };
+    });
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: `Image fetch failed: ${error.message}`,
-    };
+    return new Response("Proxy error: " + error.message, { status: 502 });
   }
 };
+
+export default handler;
