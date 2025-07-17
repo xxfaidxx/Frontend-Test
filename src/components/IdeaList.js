@@ -1,4 +1,3 @@
-// src/components/IdeaList.js
 import React from "react";
 import LazyLoad from "react-lazyload";
 import dayjs from "dayjs";
@@ -7,10 +6,12 @@ const IdeaList = ({ ideas = [] }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {ideas.map((idea) => {
-        const imageUrl =
-          idea.medium_image?.[0]?.url ||
-          idea.small_image?.[0]?.url ||
-          "https://placehold.co/600x400?text=No+Image";
+        const rawUrl =
+          idea.medium_image?.[0]?.url || idea.small_image?.[0]?.url;
+
+        const imageUrl = rawUrl
+          ? `/image-proxy?url=${encodeURIComponent(rawUrl)}`
+          : "https://placehold.co/600x400?text=No+Image";
 
         return (
           <div

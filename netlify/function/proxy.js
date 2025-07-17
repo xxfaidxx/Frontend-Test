@@ -1,10 +1,9 @@
-// netlify/functions/image-proxy.js
 const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
-  const imageUrl = event.queryStringParameters.url;
+  const { url } = event.queryStringParameters;
 
-  if (!imageUrl) {
+  if (!url) {
     return {
       statusCode: 400,
       body: "Missing URL parameter",
@@ -12,7 +11,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const response = await fetch(imageUrl);
+    const response = await fetch(url);
     const contentType = response.headers.get("content-type");
     const buffer = await response.arrayBuffer();
 
@@ -20,15 +19,15 @@ exports.handler = async (event) => {
       statusCode: 200,
       headers: {
         "Content-Type": contentType,
-        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "public, max-age=31536000",
       },
       body: Buffer.from(buffer).toString("base64"),
       isBase64Encoded: true,
     };
-  } catch (err) {
+  } catch (error) {
     return {
       statusCode: 500,
-      body: "Image fetch failed: " + err.message,
+      body: `Error fetching image: ${error.message}`,
     };
   }
 };
