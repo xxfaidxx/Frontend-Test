@@ -44,6 +44,12 @@ const Ideas = () => {
         );
 
         setIdeas(response.data.data);
+        response.data.data.forEach((idea, i) => {
+          console.log(`Idea ${i}:`, {
+            medium_image: idea.medium_image,
+            small_image: idea.small_image,
+          });
+        });
         setMeta(response.data.meta);
         setLinks(response.data.links);
       } catch (err) {
